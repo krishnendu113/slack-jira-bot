@@ -1,7 +1,19 @@
 import OpenAI from "openai";
-import type { ChatCompletion, ChatCompletionMessageParam, ChatCompletionTool } from "openai/resources";
+import type {
+  ChatCompletion,
+  ChatCompletionMessageParam,
+  ChatCompletionTool,
+} from "openai/resources";
 import type { ConversationsRepliesResponse } from "@slack/web-api";
-import { assignJiraTicket, createJiraTicket, getJiraIssueByIdOrKey, getSupportedValuesForFields, retrieveSimilarIssuesByEmbedding, retrieveSimilarIssuesByTextSearch, searchUsers } from "./_jira";
+import {
+  assignJiraTicket,
+  createJiraTicket,
+  getJiraIssueByIdOrKey,
+  getSupportedValuesForFields,
+  retrieveSimilarIssuesByEmbedding,
+  retrieveSimilarIssuesByTextSearch,
+  searchUsers,
+} from "./_jira";
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
@@ -12,20 +24,21 @@ const SYSTEM_PROMPT: ChatCompletionMessageParam = {
     "You can search for similar tickets, summarize their resolutions, create new tickets, " +
     "and optionally assign them to users. You operate only within the context of JIRA issue management. " +
     "If a user asks for something unrelated to JIRA issues, politely decline and clarify your scope. " +
-    "Analyze the user's request and determine which tools to invoke. " +
-    "Use multiple tools if needed to accomplish the task. " +
+    "Analyze the user's request and determine which tools to invoke. Use tools in parallel if needed. " +
     "For fetching similar tickets, use retrieval with keyword refinement, JIRA text search, or both. " +
-    "Refine the user's query to improve search accuracy before passing it to any search tool. " +
-    "Always check for similar tickets before creating a new one unless specifically asked by user to skip. " +
-    "If similar tickets exist, summarize their content and provide links to the user. " +
-    "Encourage the user to consult these before proceeding to create a new ticket. " +
-    "If the user still requests a new ticket, collect all required fields in one interaction. " +
-    "Validate each field against its list of allowed values for the JIRA project. " +
-    "If any value is missing or invalid, suggest valid options clearly to the user. " +
-    "Minimize back-and-forth: confirm all required fields and values together in a single step. " +
-    "If assignment was not requested, you may optionally suggest assigning it after creation. " +
-    "Search for matching users if assignment is needed, and confirm before assigning. " +
-    "Always share the issue link with the user after creation and confirm assignment status if applicable.",
+    "Refine the user’s query before using any tool to improve accuracy. " +
+    "Always check for similar tickets unless the user specifically asks to skip this step. " +
+    "If similar tickets exist, summarize their content and provide links and potential resolutions. " +
+    "Encourage the user to refer to them before proceeding with a new ticket. " +
+    "If the user proceeds, collect all required and optional fields in one interaction. " +
+    "Validate every field using its list of allowed values from the JIRA project. " +
+    "When asking for a value, suggest valid options to the user, including examples if helpful. " +
+    "If assignment is requested or suggested, search for assignees and confirm using their email ID. " +
+    "Gather all values at once before proceeding. Do not repeatedly confirm intent to create the ticket. " +
+    "Once all required valid values are confirmed, proceed to create the ticket. " +
+    "If creation fails due to missing or invalid data, ask the user for clarification or correction. " +
+    "After creation, if assignment is requested, assign the issue and confirm status to the user. " +
+    "Always share the issue link after creation, and summarize assignment status if applicable.",
 };
 
 const TOOLS: Array<ChatCompletionTool> = [
@@ -152,7 +165,9 @@ const TOOLS: Array<ChatCompletionTool> = [
   },
 ];
 
-function resolveToolFunction(name: string): ((args?: any) => Promise<any>) | null {
+function resolveToolFunction(
+  name: string
+): ((args?: any) => Promise<any>) | null {
   switch (name) {
     case "retrieveSimilarIssuesByEmbedding":
       return retrieveSimilarIssuesByEmbedding;
