@@ -37,7 +37,7 @@ const SYSTEM_PROMPT: ChatCompletionMessageParam = {
     "When asking for assignment, confirm the user using email ID and suggest likely matches. " +
     "Avoid repeated confirmations — gather all values together before proceeding with creation. " +
     "Once all valid inputs are confirmed, proceed to create the ticket without further prompts. " +
-    "If creation fails due to missing or invalid data, clarify and re-ask only what’s needed. " +
+    "If creation fails due to missing or invalid data, clarify and re-ask only what's needed. " +
     "After creation, assign the ticket if requested, and confirm the final status to the user. " +
     "Always share the created ticket link and summarize the assignment outcome if applicable. " +
     "This prompt is followed by past conversation between the user and the agent. " +
