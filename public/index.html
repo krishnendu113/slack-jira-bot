@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>JIRA Slackbot with Vercel - README</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 2rem; background: #fafbfc; color: #222; }
+    #readme { max-width: 800px; margin: auto; background: #fff; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 8px #0001; }
+    pre, code { background: #f6f8fa; border-radius: 4px; }
+    pre { padding: 1em; overflow-x: auto; }
+    h1, h2, h3 { border-bottom: 1px solid #eee; padding-bottom: .3em; }
+    a { color: #0366d6; }
+  </style>
+</head>
+<body>
+  <div id="readme">Loading README...</div>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script>
+    fetch('/README.md')
+      .then(res => res.text())
+      .then(md => {
+        document.getElementById('readme').innerHTML = marked.parse(md);
+      })
+      .catch(() => {
+        document.getElementById('readme').textContent = 'Could not load README.md';
+      });
+  </script>
+</body>
+</html>
