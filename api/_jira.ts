@@ -26,9 +26,9 @@ const authHeader = {
   "Content-Type": "application/json",
 };
 
-getSupportedValuesForFields().then((fieldValueMap) => {
-  fieldValueMapGlobal = fieldValueMap;
-});
+// getSupportedValuesForFields().then((fieldValueMap) => {
+//   fieldValueMapGlobal = fieldValueMap;
+// });
 
 // Create a new connection pool
 const pool = new pg.Pool({
