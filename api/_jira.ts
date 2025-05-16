@@ -244,7 +244,7 @@ export async function createJiraTicket({
   component: string;
   environment: string;
   assigneeId?: string;
-}): Promise<{ ticketId: string; url: string }> {
+}): Promise<{ ticketId: string; url: string; assignResponse: any }> {
   const response = await axios.post(
     `${process.env.JIRA_BASE_URL}/rest/api/3/issue`,
     {
@@ -294,17 +294,30 @@ export async function createJiraTicket({
     }
   );
 
+  let assignResponse = null;
   if (assigneeId) {
-    const assignResponse = await assignJiraTicket({
-      idOrKey: response.data.key,
-      accountId: assigneeId,
-    });
-    console.log("Assign response", JSON.stringify(assignResponse));
+    try {
+      assignResponse = await assignJiraTicket({
+        idOrKey: response.data.key,
+        accountId: assigneeId,
+      });
+      console.log("Assign response", JSON.stringify(assignResponse));
+    } catch (error) {
+      const err = error as any;
+      assignResponse = {
+        code: err?.code,
+        name: err?.name,
+        message: err?.message,
+        status: err?.response?.status,
+        body: err?.response?.data,
+      };
+    }
   }
 
   return {
     ticketId: response.data.key,
     url: `${process.env.JIRA_BASE_URL}/browse/${response.data.key}`,
+    assignResponse,
   };
 }
 
