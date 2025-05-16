@@ -1,4 +1,5 @@
 import dotenv from "dotenv";
+import axios from "axios";
 
 dotenv.config();
 
@@ -15,11 +16,11 @@ export async function POST(request: Request) {
   }
 
   // Forward the event to your async processor (don't await)
-  fetch(`${process.env.BACKEND_API_URL}/api/reply`, {
-    method: 'POST',
-    body: JSON.stringify(body),
+  axios.post(`${process.env.BACKEND_API_URL}/api/reply`, body, {
     headers: { 'Content-Type': 'application/json' },
   }).catch(console.error); // Fire and forget
+
+  console.log("API fired", `${process.env.BACKEND_API_URL}/api/reply`, body);
 
   return new Response("OK", { status: 200, headers: { "x-slack-no-retry": "1" } });
 }
