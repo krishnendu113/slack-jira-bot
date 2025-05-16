@@ -59,4 +59,8 @@ bower_components/
 # Output files
 dist/*
 
+# Ignore vercel files
 .vercel
+
+# Ignore test files
+**/test*

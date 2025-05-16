@@ -199,7 +199,13 @@ function mapToolResultsToPrompts(
     role: "tool",
     tool_call_id: toolCalls[i].id,
     content: JSON.stringify(
-      toolResult.status === "fulfilled" ? toolResult.value : toolResult.reason
+      toolResult.status === "fulfilled" ? toolResult.value : {
+        code: toolResult.reason?.code,
+        name: toolResult.reason?.name,
+        message: toolResult.reason?.message,
+        status: toolResult.reason?.response.status,
+        body: toolResult.reason?.response.data
+      },
     ),
   }));
 }
