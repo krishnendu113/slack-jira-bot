@@ -295,10 +295,11 @@ export async function createJiraTicket({
   );
 
   if (assigneeId) {
-    await assignJiraTicket({
+    const assignResponse = await assignJiraTicket({
       idOrKey: response.data.key,
       accountId: assigneeId,
     });
+    console.log("Assign response", JSON.stringify(assignResponse));
   }
 
   return {

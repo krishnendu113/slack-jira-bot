@@ -24,7 +24,7 @@ export async function sendChatResponse(event: Event) {
       });
       // Reverse the messages to get the latest last
       history.messages = history.messages?.reverse();
-      console.log("History:", JSON.stringify(history));
+      // console.log("History:", JSON.stringify(history));
     } else {
       history = await slack.conversations.replies({
         channel,
@@ -32,7 +32,7 @@ export async function sendChatResponse(event: Event) {
         inclusive: true,
         limit: Number(process.env.MESSAGE_HISTORY_LIMIT ?? "8"),
       });
-      console.log("Thread:", JSON.stringify(history));
+      // console.log("Thread:", JSON.stringify(history));
     }
     const prompts = await generatePromptFromThread(history);
     const gptResponse = await getChatResponse(prompts);

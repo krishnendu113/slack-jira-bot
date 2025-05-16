@@ -29,7 +29,7 @@ export async function POST(request: Request) {
     return new Response(body.challenge, { status: 200 });
   }
 
-  console.log("Received request:", requestType, JSON.stringify(body));
+  // console.log("Received request:", requestType, JSON.stringify(body));
 
   if (await isValidSlackRequest(request, body)) {
     const headers = request.headers;

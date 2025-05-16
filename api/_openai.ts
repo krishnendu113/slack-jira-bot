@@ -195,19 +195,25 @@ function mapToolResultsToPrompts(
   toolResults: PromiseSettledResult<any>[],
   toolCalls: any[]
 ): ChatCompletionMessageParam[] {
-  return toolResults.map((toolResult, i) => ({
-    role: "tool",
-    tool_call_id: toolCalls[i].id,
-    content: JSON.stringify(
-      toolResult.status === "fulfilled" ? toolResult.value : {
-        code: toolResult.reason?.code,
-        name: toolResult.reason?.name,
-        message: toolResult.reason?.message,
-        status: toolResult.reason?.response.status,
-        body: toolResult.reason?.response.data
-      },
-    ),
-  }));
+  return toolResults.map((toolResult, i) => {
+    const resp: ChatCompletionMessageParam = {
+      role: "tool",
+      tool_call_id: toolCalls[i].id,
+      content: JSON.stringify(
+        toolResult.status === "fulfilled"
+          ? toolResult.value
+          : {
+              code: toolResult.reason?.code,
+              name: toolResult.reason?.name,
+              message: toolResult.reason?.message,
+              status: toolResult.reason?.response.status,
+              body: toolResult.reason?.response.data,
+            }
+      ),
+    };
+    console.log("Tool Result:", JSON.stringify(resp));
+    return resp;
+  });
 }
 
 export async function getChatResponse(
@@ -277,6 +283,6 @@ export async function generatePromptFromThread({
     })
     .filter(Boolean);
 
-  console.log("Conversation:", JSON.stringify(result));
+  // console.log("Conversation:", JSON.stringify(result));
   return result as ChatCompletionMessageParam[];
 }
