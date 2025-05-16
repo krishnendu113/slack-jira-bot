@@ -58,3 +58,5 @@ bower_components/
 
 # Output files
 dist/*
+
+.vercel
