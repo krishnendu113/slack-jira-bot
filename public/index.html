@@ -14,17 +14,135 @@
   </style>
 </head>
 <body>
-  <div id="readme">Loading README...</div>
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-  <script>
-    fetch('/README.md')
-      .then(res => res.text())
-      .then(md => {
-        document.getElementById('readme').innerHTML = marked.parse(md);
-      })
-      .catch(() => {
-        document.getElementById('readme').textContent = 'Could not load README.md';
-      });
-  </script>
+  <div id="readme">
+    <h1>JIRA Slackbot with Vercel</h1>
+    <p>This is a Slack chatbot that leverages OpenAI's GPT models and integrates with Supabase as a vector store for Retrieval-Augmented Generation (RAG). It also connects to JIRA to help you manage tasks, including ticket creation (with duplicate detection via RAG), ticket summarization, and assigning tickets to users. The bot is deployed on Vercel.</p>
+
+    <h3>Features</h3>
+    <ul>
+      <li><strong>JIRA Task Q&amp;A:</strong> Ask questions specifically about JIRA tasks and get answers powered by OpenAI's GPT models.</li>
+      <li><strong>JIRA Integration:</strong>
+        <ul>
+          <li>Create new JIRA tickets with duplicate check using RAG.</li>
+          <li>Summarize any JIRA ticket.</li>
+          <li>Assign tickets to users directly from Slack.</li>
+        </ul>
+      </li>
+      <li><strong>RAG with Supabase:</strong> Uses Supabase as a vector store to enhance responses and perform duplicate detection for JIRA tickets.</li>
+      <li><strong>Easy Deployment:</strong> Runs seamlessly on Vercel.</li>
+    </ul>
+
+    <h3>Environment Variables</h3>
+    <p>After completing the setup instructions below, you will have the following <code>.env</code> file in your project for local testing, and the same environment variables added on Vercel:</p>
+    <pre><code>OPENAI_API_KEY=
+SLACK_BOT_TOKEN=
+SLACK_SIGNING_SECRET=
+SLACK_ADMIN_MEMBER_ID=
+SUPABASE_URL=
+SUPABASE_SERVICE_ROLE_KEY=
+JIRA_BASE_URL=
+JIRA_EMAIL=
+JIRA_API_TOKEN=
+</code></pre>
+
+    <h4>OpenAI API Key</h4>
+    <ul>
+      <li>Create a new key on <a href="https://platform.openai.com/api-keys">OpenAI API Keys</a> and "Create new secret key", optionally naming the key.</li>
+      <li>Add the key to Vercel's environment variables as <code>OPENAI_API_KEY</code>.</li>
+    </ul>
+
+    <h4>Slack Bot Token &amp; Signing Secret</h4>
+    <p>Go to <a href="https://api.slack.com/apps">Slack API Apps Page</a>:</p>
+    <ul>
+      <li>Create new App
+        <ul>
+          <li>From Scratch</li>
+          <li>Name your app &amp; pick a workspace</li>
+        </ul>
+      </li>
+      <li>Go to OAuth &amp; Permissions
+        <ul>
+          <li>Scroll to scopes</li>
+          <li>Add the following scopes
+            <ul>
+              <li><code>app_mentions:read</code></li>
+              <li><code>channels:history</code></li>
+              <li><code>chat:write</code></li>
+              <li><code>commands</code></li>
+            </ul>
+          </li>
+          <li>Click "Install to Workplace"</li>
+          <li>Copy <strong>Bot User OAuth Token</strong></li>
+          <li>Add the token to Vercel's environment variables as <code>SLACK_BOT_TOKEN</code></li>
+        </ul>
+      </li>
+      <li>Getting signing secret
+        <ul>
+          <li>Basic Information --&gt; App Credentials --&gt; Copy <strong>Signing Secret</strong></li>
+          <li>Add the secret to Vercel's environment variables as <code>SLACK_SIGNING_SECRET</code></li>
+        </ul>
+      </li>
+    </ul>
+
+    <h4>Supabase Configuration</h4>
+    <ul>
+      <li>Create a project on <a href="https://supabase.com/">Supabase</a>.</li>
+      <li>Get your project URL and Service Role Key.</li>
+      <li>Add them to Vercel's environment variables as <code>SUPABASE_URL</code> and <code>SUPABASE_SERVICE_ROLE_KEY</code>.</li>
+    </ul>
+
+    <h4>JIRA Configuration</h4>
+    <ul>
+      <li>Get your JIRA instance base URL, email, and API token.</li>
+      <li>Add them to Vercel's environment variables as <code>JIRA_BASE_URL</code>, <code>JIRA_EMAIL</code>, and <code>JIRA_API_TOKEN</code>.</li>
+    </ul>
+
+    <h4>Admin's Slack Member ID</h4>
+    <ul>
+      <li>Click on your profile picture in Slack and click <strong>Profile</strong>.</li>
+      <li>Click on the three dots in the middle right corner and select <strong>Copy member ID</strong>.</li>
+      <li>Add the ID to Vercel's environment variables as <code>SLACK_ADMIN_MEMBER_ID</code>.</li>
+    </ul>
+
+    <h3>Enable Slack Events</h3>
+    <p>After successfully deploying the app, go to <a href="https://api.slack.com/apps">Slack API Apps Page</a> and select your app:</p>
+    <ul>
+      <li>Go to <strong>Event Subscriptions</strong> and enable events.</li>
+      <li>Add the following URL to <strong>Request URL</strong>:
+        <ul>
+          <li><code>https://&lt;your-vercel-app&gt;.vercel.app/api/events</code></li>
+          <li>Make sure the URL is verified, otherwise check out <a href="https://vercel.com/docs/observability/runtime-logs">Vercel Logs</a> for troubleshooting.</li>
+          <li>Subscribe to bot events by adding:
+            <ul>
+              <li><code>app_mention</code></li>
+              <li><code>channel_created</code></li>
+            </ul>
+          </li>
+          <li>Click <strong>Save Changes</strong>.</li>
+        </ul>
+      </li>
+      <li>Slack requires you to reinstall the app to apply the changes.</li>
+    </ul>
+
+    <h2>Local Development</h2>
+    <p>Use the <a href="https://vercel.com/docs/cli">Vercel CLI</a> and <a href="https://github.com/localtunnel/localtunnel">localtunnel</a> to test out this project locally:</p>
+    <pre><code>pnpm i -g vercel
+pnpm vercel dev --listen 3000 --yes
+</code></pre>
+    <pre><code>npx localtunnel --port 3000
+</code></pre>
+    <p>Make sure to modify the <a href="./README.md/#enable-slack-events">subscription URL</a> to the <code>localtunnel</code> URL.</p>
+
+    <h2>Production Deployment</h2>
+    <p>To deploy your Slackbot to production using Vercel:</p>
+    <ol>
+      <li>Push your latest code to your main branch (e.g., <code>main</code> or <code>master</code>).</li>
+      <li>Go to your project on <a href="https://vercel.com/dashboard">Vercel Dashboard</a> and click <strong>Deploy</strong>.</li>
+      <li>Or, deploy directly from the command line:</li>
+    </ol>
+    <pre><code>vercel --prod
+</code></pre>
+    <p>This will trigger a production deployment and provide you with a live URL (e.g., <code>https://your-app.vercel.app</code>). Use this URL for your Slack Event Subscriptions in production.</p>
+  </div>
 </body>
 </html>
