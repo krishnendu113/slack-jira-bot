@@ -168,34 +168,19 @@ export async function getSupportedValuesForFields(): Promise<FieldValueMap> {
   const project = res.data.projects[0];
 
   const fieldValueMap: FieldValueMap = {
-    issuetypes: project.issuetypes.map((type: any) => ({
-      name: type.name,
-      id: type.id,
-    })),
+    issuetypes: project.issuetypes.map((type: any) => type.name),
     priority: project.issuetypes[0].fields.priority.allowedValues.map(
-      (priority: any) => ({
-        name: priority.name,
-        id: priority.id,
-      })
+      (priority: any) => priority.name
     ),
     components: project.issuetypes[0].fields.components.allowedValues.map(
-      (component: any) => ({
-        name: component.name,
-        id: component.id,
-      })
+      (component: any) => component.name
     ),
     brands: project.issuetypes[0].fields.customfield_11997.allowedValues.map(
-      (brand: any) => ({
-        name: brand.value,
-        id: brand.id,
-      })
+      (brand: any) => brand.value
     ),
     environments:
       project.issuetypes[0].fields.customfield_11800.allowedValues.map(
-        (environment: any) => ({
-          name: environment.value,
-          id: environment.id,
-        })
+        (environment: any) => environment.value
       ),
   };
 
@@ -234,7 +219,7 @@ export async function createJiraTicket({
   brand,
   component,
   environment,
-  assigneeId,
+  assigneeAccountId,
 }: {
   issueType: string;
   priority: string;
@@ -243,7 +228,7 @@ export async function createJiraTicket({
   brand: string;
   component: string;
   environment: string;
-  assigneeId?: string;
+  assigneeAccountId?: string;
 }): Promise<{ ticketId: string; url: string; assignResponse: any }> {
   const response = await axios.post(
     `${process.env.JIRA_BASE_URL}/rest/api/3/issue`,
@@ -295,11 +280,11 @@ export async function createJiraTicket({
   );
 
   let assignResponse = null;
-  if (assigneeId) {
+  if (assigneeAccountId) {
     try {
       assignResponse = await assignJiraTicket({
         idOrKey: response.data.key,
-        accountId: assigneeId,
+        assigneeAccountId: assigneeAccountId,
       });
       console.log("Assign response", JSON.stringify(assignResponse));
     } catch (error) {
@@ -323,15 +308,15 @@ export async function createJiraTicket({
 
 export async function assignJiraTicket({
   idOrKey,
-  accountId,
+  assigneeAccountId,
 }: {
   idOrKey: string;
-  accountId: string;
+  assigneeAccountId: string;
 }): Promise<{ status: number }> {
   const response = await axios.put(
     `${process.env.JIRA_BASE_URL}/rest/api/3/issue/${idOrKey}/assignee`,
     {
-      accountId,
+      accountId: assigneeAccountId,
     },
     {
       headers: authHeader,

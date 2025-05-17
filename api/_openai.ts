@@ -35,7 +35,7 @@ const SYSTEM_PROMPT: ChatCompletionMessageParam = {
 "Validate each field using getSupportedValuesForFields before using them. Do not hallucinate values. " +
 "Also validate user existence using searchUsers by email during the same validation step. " +
 "Call getSupportedValuesForFields and searchUsers in parallel to reduce user wait time. " +
-"When presenting options, suggest user-friendly names but retain actual values in brackets (e.g., ID). " +
+"When presenting options, suggest user-friendly names but retain actual values in brackets (e.g., accountId). " +
 "Example: 'Would you like to assign this to John Doe <john@demo.com> (abc123)?' or 'Priority: High (2)' — ask politely. " +
 "Store and reuse actual values from chat history when the user continues or re-invokes the task. " +
 "When requesting assignment, use email and confirm using validated results from searchUsers. " +
