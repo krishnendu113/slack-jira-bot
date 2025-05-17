@@ -66,6 +66,8 @@ export async function POST(request: Request) {
     }
   }
 
+  console.log("Unprocessed request:", requestType, JSON.stringify(body.event));
+
   return new Response("OK", {
     status: 200,
     headers: { "x-slack-no-retry": "1" },
