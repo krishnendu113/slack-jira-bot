@@ -164,9 +164,9 @@ const TOOLS: Array<ChatCompletionTool> = [
         type: "object",
         properties: {
           idOrKey: { type: "string" },
-          accountId: { type: "string" },
+          assigneeAccountId: { type: "string" },
         },
-        required: ["idOrKey", "accountId"],
+        required: ["idOrKey", "assigneeAccountId"],
       },
     },
   },
