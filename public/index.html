@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Slack JIRA Assistant Bot Overview</title>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -52,7 +53,16 @@
       <strong>Slack message history</strong> as short-term memory to maintain context.
     </p>
   </div>
-
+  <div class="section" style="text-align: center;">
+    <img 
+      src="JiraVercelArchitecture.png" 
+      alt="JIRA Vercel Architecture Diagram" 
+      style="max-width: 580px; width: 100%; height: auto; border-radius: 12px; box-shadow: 0 2px 12px rgba(44,62,80,0.12); margin: 1.5rem auto; display: block;"
+    />
+    <div style="font-size: 0.95rem; color: #555; margin-top: 0.5rem;">
+      <em>Figure: High-level architecture of the Slack JIRA Assistant Bot on Vercel</em>
+    </div>
+  </div>
   <h2>🚀 Key Features</h2>
   <ul>
     <li><strong>⚙️ Deployed as a Vercel Serverless Function</strong><br>
@@ -81,6 +91,20 @@
     </li>
   </ul>
 
+  <div class="section" style="text-align: center;">
+    <video 
+      controls 
+      style="width: 100%; border-radius: 12px; box-shadow: 0 2px 12px rgba(44,62,80,0.12); margin: 1.5rem auto; display: block;"
+    >
+      <source src="https://gppvq9wsobz9jktw.public.blob.vercel-storage.com/JiraBotDemo-DhaNdeSj2tgRmd4jwTRnGX4G1W7Tzj.mp4" type="video/mp4">
+      <track kind="subtitles" src="JiraBotDemo.en.vtt" srclang="en" label="English Subtitles" default>
+      <track kind="descriptions" src="JiraBotDemo.desc.vtt" srclang="en" label="Audio Description">
+      Your browser does not support the video tag.
+    </video>
+    <div style="font-size: 0.95rem; color: #555; margin-top: 0.5rem;">
+      <em>Demo: Slack JIRA Assistant Bot in action</em>
+    </div>
+  </div>
   <h2>🔁 Data Flow</h2>
   <ul>
     <li><strong>User Sends Message in Slack →</strong> Bot is triggered by new user message.</li>
