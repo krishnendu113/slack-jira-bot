@@ -284,7 +284,7 @@ export async function createJiraTicket({
     try {
       assignResponse = await assignJiraTicket({
         idOrKey: response.data.key,
-        assigneeAccountId: assigneeAccountId,
+        assigneeAccountId,
       });
       console.log("Assign response", JSON.stringify(assignResponse));
     } catch (error) {

@@ -36,7 +36,7 @@ const SYSTEM_PROMPT: ChatCompletionMessageParam = {
     "Call getSupportedValuesForFields and searchUsers in parallel to validate values. " +
     "Do not hallucinate field values — only use values returned from validation tools. " +
     "When confirming any value, always include the actual allowed value in brackets in the message. " +
-    "Example: 'Would you like to assign this to John <john@demo.com> (acc123)?' or 'Priority: High (2)'. " +
+    "Example: 'Would you like to assign this to John <john@demo.com> (acc123)?' or 'Priority: High (High-P1)'. " +
     "Ask politely using a question tone when seeking confirmations, not as a statement. " +
     "Always store and reuse validated values from the brackets in future tool calls. " +
     "Use Slack history context to preserve memory across user sessions. " +
@@ -140,7 +140,7 @@ const TOOLS: Array<ChatCompletionTool> = [
           brand: { type: "string" },
           component: { type: "string", default: "na" },
           environment: { type: "string" },
-          assigneeId: { type: "string" },
+          assigneeAccountId: { type: "string" },
         },
         required: [
           "priority",
