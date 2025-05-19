@@ -65,29 +65,32 @@
   </div>
   <h2>🚀 Key Features</h2>
   <ul>
-    <li><strong>⚙️ Deployed as a Vercel Serverless Function</strong><br>
-      Lightweight, fast, and scalable with zero maintenance overhead.
-    </li>
-    <li><strong>🧠 Slack-Based Conversational Memory</strong><br>
-      Maintains <em>recent message history</em> from Slack to provide context-aware responses.
-    </li>
     <li><strong>🔍 Smart Duplicate Ticket Detection</strong><br>
       Uses <em>semantic search</em> via OpenAI embeddings and <em>JIRA keyword-based search</em>. Summarizes and shares results.
-    </li>
-    <li><strong>🛠️ Agent-Driven Multi-Tool Execution</strong><br>
-      Agent can retrieve tickets, validate fields, create issues, and assign tickets — all with minimal user interaction.
-    </li>
-    <li><strong>📝 One-Step Field Gathering & Validation</strong><br>
-      Collects and validates all necessary fields in one step, offering suggestions based on allowed values.
     </li>
     <li><strong>👤 Post-Creation Optional Assignment</strong><br>
       Allows assignment after creation if requested. Uses email ID to identify possible assignees.
     </li>
-    <li><strong>📚 Retrieval-Augmented Generation (RAG)</strong><br>
-      Connects to <em>Supabase</em> for vector search and summarizes matches using <em>GPT-4.1-mini</em>.
+    <li><strong>📝 One-Step Field Gathering & Validation</strong><br>
+      Collects and validates all necessary fields in one step, offering suggestions based on allowed values.
     </li>
     <li><strong>🧾 Scoped, Helpful, and Polite</strong><br>
       Answers only JIRA-related queries and gracefully declines unrelated requests.
+    </li>
+    <li><strong>🔐 Privacy-First by Design</strong><br>
+      Never reveals internal tool details or user data; access is strictly scoped to JIRA ticket actions.
+    </li>
+    <li><strong>🛠️ Agent-Driven Multi-Tool Execution</strong><br>
+      Agent can retrieve tickets, validate fields, create issues, and assign tickets — all with minimal user interaction.
+    </li>
+    <li><strong>🧠 Slack-Based Conversational Memory</strong><br>
+      Maintains <em>recent message history</em> from Slack to provide context-aware responses.
+    </li>
+    <li><strong>📚 Retrieval-Augmented Generation (RAG)</strong><br>
+      Connects to <em>Supabase</em> for vector search and summarizes matches using <em>GPT-4.1-mini</em>.
+    </li>
+    <li><strong>⚙️ Deployed as a Vercel Serverless Function</strong><br>
+      Lightweight, fast, and scalable with zero maintenance overhead.
     </li>
   </ul>
 
